@@ -1,16 +1,20 @@
 FROM node:18-alpine AS builder
-WORKDIR /app
-COPY package*.json .
-RUN npm ci
-COPY . .
-RUN npm run build
-RUN npm prune --production
+
+RUN mkdir /app && mkdir /app/data
+
+COPY . /app
 
 FROM node:18-alpine
+
+RUN mkdir /app
+
+COPY --from=builder /app/build /app/build
+COPY --from=builder /app/package.json /app/yarn.lock /app/
+
+RUN cd /app && \ 
+  yarn install --production && \
+  yarn cache clean
+
 WORKDIR /app
-COPY --from=builder /app/build build/
-COPY --from=builder /app/node_modules node_modules/
-COPY package.json .
-EXPOSE 3000
-ENV NODE_ENV=production
-CMD [ "node", "build" ]
+
+CMD ["node", "build/index.js"]
