@@ -7,4 +7,5 @@ import {
 export const postsTable = sqliteTable("posts", {
     id: integer("id").primaryKey(),
     content: text("content").notNull(),
-    created: text("created_at"),})
+    created: text("created_at"),
+})

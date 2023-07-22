@@ -9,7 +9,7 @@ export const load = (async () => {
 
 
 export const actions: Actions = {
-    createPost: async ({ request } ) => {
+    createPost: async ({ request }) => {
         let data = await request.formData();
         let content = data.get("content")?.toString() ?? "";
         db.insert(postsTable).values({ content }).run();
