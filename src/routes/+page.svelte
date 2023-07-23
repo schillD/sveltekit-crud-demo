@@ -1,20 +1,23 @@
 <script lang="ts">
     import { enhance } from "$app/forms";
     import Post from "$lib/Post.svelte";
-    import { onMount } from "svelte";
+    import { ip } from "$lib/stores";
     export let data;
     $: allPosts = data.allPosts;
     
 
 
     const fetchAndUpdateData = async () => {
-      const res = await fetch("/api/getAllPosts");
+        if($ip === undefined){
+            return;
+        }
+      const res = await fetch($ip +"api/getAllPosts");
       const data = await res.json();
       allPosts = data;
 }
 
     
-    const polling = setInterval(fetchAndUpdateData, 200);
+    const polling = setInterval(fetchAndUpdateData, 2000);
 
     
 </script>
