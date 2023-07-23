@@ -25,6 +25,13 @@ export const actions: Actions = {
         let id = Number(data.get("id"));
         db.delete(postsTable).where(eq(postsTable.id, id)).run();
         return { success: true };
+    },
+    updatePost: async ({request}) => {
+        let data = await request.formData();
+        let id = Number(data.get("id"));
+        let content = String(data.get("content"));
+        db.update(postsTable).set({ content }).where(eq(postsTable.id, id)).run();
+        return { success: true };
     }
 
 } satisfies Actions;
