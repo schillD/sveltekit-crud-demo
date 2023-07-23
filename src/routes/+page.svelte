@@ -1,8 +1,22 @@
 <script lang="ts">
     import { enhance } from "$app/forms";
     import Post from "$lib/Post.svelte";
+    import { onMount } from "svelte";
     export let data;
     $: allPosts = data.allPosts;
+    
+
+
+    const fetchAndUpdateData = async () => {
+      const res = await fetch("/api/getAllPosts");
+      const data = await res.json();
+      allPosts = data;
+}
+
+    
+    const polling = setInterval(fetchAndUpdateData, 200);
+
+    
 </script>
 
 <div class="grid gap-4 place-content-center m-4">
