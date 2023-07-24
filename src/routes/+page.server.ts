@@ -13,6 +13,7 @@ export const actions: Actions = {
     createPost: async ({ request }) => {
         let data = await request.formData();
         let content = data.get("content")?.toString() ?? "";
+        if(content === "" || content.trim() ==="") return { success: false };
         db.insert(postsTable).values({ content }).run();
         return { success: true };
     },
@@ -30,6 +31,7 @@ export const actions: Actions = {
         let data = await request.formData();
         let id = Number(data.get("id"));
         let content = String(data.get("content"));
+        if(content === "" || content.trim() ==="") return { success: false };
         db.update(postsTable).set({ content }).where(eq(postsTable.id, id)).run();
         return { success: true };
     }
